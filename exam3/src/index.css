@@ -1,0 +1,107 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #282c34;
+  color: white;
+  padding: 40px;
+  font-family: Arial;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+h1 {
+  text-align: center;
+}
+
+#formlogin{
+  margin: auto;
+  width: 20%;
+  border: 3px solid red;
+  padding: 10px;
+}
+
+#formregister{
+  margin: auto;
+  width: 30%;
+  border: 3px solid green;
+  padding: 10px;
+}
+
+#btnlogout{
+  width: 20%;
+  margin-top: 5%;
+  margin-bottom: 5%;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+input{
+  width: 100%;
+  margin-top: 5%;
+  margin-bottom: 5%;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+select{
+  width: 100%;
+  margin-top: 5%;
+  margin-bottom: 5%;
+}
+
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 60%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+td {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+th{
+  border: 1px solid #dddddd;
+  padding: 8px;
+  text-align: center;
+}
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid #e7e7e7;
+  background-color: #f3f3f3;
+}
+
+li {
+  float: left;
+}
+
+li a {
+  display: block;
+  color: #666;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+li a:hover:not(.active) {
+  background-color: #ddd;
+}
+
+li a.active {
+  color: white;
+  background-color: #4CAF50;
+}
