@@ -1,0 +1,277 @@
+{
+    "cells": [
+        {
+            "language": "markdown",
+            "source": [
+                "# React Interview Questions\n\nThis notebook contains 20 common interview questions about React, with explanations and sample code where applicable."
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "## Question 1: What is React and what are its key features?\n\n**Answer:**\nReact is an open-source JavaScript library developed by Facebook for building user interfaces, particularly for single-page applications where UI updates are frequent.\n\n**Key features include:**\n- **Component-Based Architecture**: UI is split into reusable, self-contained components\n- **Virtual DOM**: Efficient updating of the actual DOM through a lightweight virtual representation\n- **JSX**: Syntax extension that allows mixing HTML with JavaScript\n- **Unidirectional Data Flow**: Data flows in one direction from parent to child components\n- **React Native Support**: Can be used to develop mobile applications\n- **Declarative UI**: You describe what the UI should look like, not how to update it"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "## Question 2: Explain the Virtual DOM in React.\n\n**Answer:**\nThe Virtual DOM is a programming concept where a virtual representation of the UI is kept in memory and synced with the real DOM through a process called reconciliation.\n\n**How it works:**\n1. When state changes in a React component, React creates a new virtual DOM tree\n2. React then compares this new tree with the previous virtual DOM tree (diffing)\n3. React calculates the most efficient way to update the real DOM\n4. Finally, it updates only the necessary parts of the real DOM\n\n**Benefits:**\n- Improved performance by minimizing expensive DOM operations\n- Batch processing of DOM updates\n- Cross-platform compatibility (works in environments without a DOM)"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "## Question 3: What are components in React and what are the different types?\n\n**Answer:**\nComponents are the building blocks of React applications. They are reusable, self-contained pieces of code that return React elements describing what should appear on the screen.\n\n**Main types of components:**\n\n1. **Functional Components (Function Components):**\n   - JavaScript functions that accept props and return JSX\n   - With Hooks, they can now use state and other React features\n   - Preferred in modern React development\n\n2. **Class Components:**\n   - ES6 classes that extend React.Component\n   - Have access to lifecycle methods and can maintain internal state\n   - More verbose than functional components"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "jsx",
+            "source": [
+                "// Functional Component\nfunction Welcome(props) {\n  return <h1>Hello, {props.name}</h1>;\n}\n\n// Class Component\nclass WelcomeClass extends React.Component {\n  render() {\n    return <h1>Hello, {this.props.name}</h1>;\n  }\n}\n\n// Functional Component with useState Hook\nfunction Counter() {\n  const [count, setCount] = useState(0);\n  \n  return (\n    <div>\n      <p>You clicked {count} times</p>\n      <button onClick={() => setCount(count + 1)}>\n        Click me\n      </button>\n    </div>\n  );\n}"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "## Question 4: What's the difference between state and props in React?\n\n**Answer:**\n\n**Props (Properties):**\n- Data passed from parent to child components\n- Read-only and cannot be modified by the receiving component\n- Help make components reusable\n- Changes to props trigger re-render\n\n**State:**\n- Data maintained within a component\n- Can be modified using setState() or state updater functions (with Hooks)\n- Private and fully controlled by the component\n- Changes to state trigger re-render\n- Should only be used when necessary\n\n**Key differences:**\n- Props are passed down, state is managed within\n- Props are immutable, state is mutable (through proper methods)\n- Props enable component communication, state is for component-specific data"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "jsx",
+            "source": [
+                "// Props example\nfunction ParentComponent() {\n  return <ChildComponent message=\"Hello from parent\" />;\n}\n\nfunction ChildComponent(props) {\n  return <p>{props.message}</p>;\n}\n\n// State example with hooks\nfunction ToggleButton() {\n  const [isOn, setIsOn] = useState(false);\n  \n  return (\n    <button onClick={() => setIsOn(!isOn)}>\n      {isOn ? 'ON' : 'OFF'}\n    </button>\n  );\n}\n\n// State example with class component\nclass Counter extends React.Component {\n  constructor(props) {\n    super(props);\n    this.state = { count: 0 };\n  }\n  \n  incrementCount = () => {\n    this.setState({ count: this.state.count + 1 });\n  }\n  \n  render() {\n    return (\n      <div>\n        <p>Count: {this.state.count}</p>\n        <button onClick={this.incrementCount}>Increment</button>\n      </div>\n    );\n  }\n}"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "## Question 5: What are React Hooks and what are the commonly used ones?\n\n**Answer:**\nReact Hooks, introduced in React 16.8, are functions that let you use state and other React features in functional components, without writing a class.\n\n**Benefits of Hooks:**\n- Allow using state and lifecycle features in functional components\n- Make it easier to reuse stateful logic between components\n- Group related code together (vs splitting by lifecycle methods)\n- Avoid the complexity of class components and `this` binding\n\n**Common built-in Hooks:**\n\n1. **useState**: Adds state to functional components\n2. **useEffect**: Performs side effects (similar to componentDidMount, componentDidUpdate, and componentWillUnmount combined)\n3. **useContext**: Accesses a React context value\n4. **useReducer**: Manages complex state logic with a reducer function\n5. **useCallback**: Returns a memoized callback function\n6. **useMemo**: Returns a memoized value\n7. **useRef**: Creates a mutable reference that persists across renders"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "jsx",
+            "source": [
+                "// useState example\nfunction Counter() {\n  const [count, setCount] = useState(0);\n  \n  return (\n    <div>\n      <p>Count: {count}</p>\n      <button onClick={() => setCount(count + 1)}>Increment</button>\n    </div>\n  );\n}\n\n// useEffect example\nfunction DataFetcher() {\n  const [data, setData] = useState(null);\n  const [loading, setLoading] = useState(true);\n  \n  useEffect(() => {\n    // This runs after render, similar to componentDidMount\n    fetch('https://api.example.com/data')\n      .then(response => response.json())\n      .then(data => {\n        setData(data);\n        setLoading(false);\n      });\n      \n    // Optional cleanup function, similar to componentWillUnmount\n    return () => {\n      console.log('Component unmounting, cleanup here');\n    };\n  }, []); // Empty dependency array means this runs once on mount\n  \n  if (loading) return <div>Loading...</div>;\n  return <div>Data: {JSON.stringify(data)}</div>;\n}\n\n// useContext example\nconst ThemeContext = React.createContext('light');\n\nfunction ThemedButton() {\n  const theme = useContext(ThemeContext);\n  return <button style={{ background: theme === 'dark' ? '#333' : '#fff' }}>Themed Button</button>;\n}"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "## Question 6: What is JSX and how does it work?\n\n**Answer:**\nJSX (JavaScript XML) is a syntax extension for JavaScript that looks similar to HTML or XML. It allows you to write HTML-like code in your JavaScript, making it easier to describe what your UI should look like.\n\n**Key features of JSX:**\n- It's neither a string nor HTML, but a syntax extension for JavaScript\n- It allows embedding expressions using curly braces `{}`\n- It gets transformed into regular JavaScript function calls\n- It helps prevent injection attacks by escaping values before rendering\n\n**How JSX works:**\n1. You write code that looks like HTML in your JavaScript files\n2. A transpiler (like Babel) converts it to regular JavaScript\n3. `<div>Hello</div>` becomes `React.createElement(\"div\", null, \"Hello\")`\n4. These function calls create React elements that form the Virtual DOM\n5. React then uses these elements to update the real DOM"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "jsx",
+            "source": [
+                "// JSX example\nfunction Greeting(props) {\n  return (\n    <div className=\"greeting\">\n      <h1>Hello, {props.name}!</h1>\n      {props.showMessage && <p>Welcome to our application</p>}\n    </div>\n  );\n}\n\n// The above JSX gets transpiled to something like:\nfunction GreetingTranspiled(props) {\n  return React.createElement(\n    \"div\",\n    { className: \"greeting\" },\n    React.createElement(\"h1\", null, \"Hello, \", props.name, \"!\"),\n    props.showMessage && React.createElement(\"p\", null, \"Welcome to our application\")\n  );\n}\n\n// JSX expressions\nfunction MathExample() {\n  const a = 5;\n  const b = 7;\n  \n  return (\n    <div>\n      <p>The sum of {a} and {b} is: {a + b}</p>\n      <p>{new Date().toLocaleDateString()}</p>\n      <button onClick={() => alert('Clicked!')}>Click Me</button>\n    </div>\n  );\n}"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "## Question 7: What are controlled vs. uncontrolled components?\n\n**Answer:**\nControlled and uncontrolled components are two different approaches to handling form inputs in React.\n\n**Controlled Components:**\n- Form data is handled by React component state\n- Input values are set by React state using the `value` prop\n- Changes are handled through event handlers like `onChange`\n- React becomes the \"single source of truth\" for input data\n- Allows for immediate validation, disabling submit button, enforcing input formats, etc.\n\n**Uncontrolled Components:**\n- Form data is handled by the DOM itself (more traditional HTML form behavior)\n- Input values are not controlled by React\n- Data is accessed using refs when needed (e.g., on form submission)\n- Slightly less code but also less control\n- Useful for simple forms or when integrating with non-React code"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "jsx",
+            "source": [
+                "// Controlled Component Example\nfunction ControlledForm() {\n  const [name, setName] = useState('');\n  const [email, setEmail] = useState('');\n  \n  const handleSubmit = (e) => {\n    e.preventDefault();\n    console.log('Submitted:', { name, email });\n    // Process form data here\n  };\n  \n  return (\n    <form onSubmit={handleSubmit}>\n      <div>\n        <label>\n          Name:\n          <input \n            type=\"text\" \n            value={name} \n            onChange={(e) => setName(e.target.value)} \n          />\n        </label>\n      </div>\n      <div>\n        <label>\n          Email:\n          <input \n            type=\"email\" \n            value={email} \n            onChange={(e) => setEmail(e.target.value)} \n          />\n        </label>\n      </div>\n      <button type=\"submit\">Submit</button>\n    </form>\n  );\n}\n\n// Uncontrolled Component Example\nfunction UncontrolledForm() {\n  const nameRef = useRef();\n  const emailRef = useRef();\n  \n  const handleSubmit = (e) => {\n    e.preventDefault();\n    const formData = {\n      name: nameRef.current.value,\n      email: emailRef.current.value\n    };\n    console.log('Submitted:', formData);\n    // Process form data here\n  };\n  \n  return (\n    <form onSubmit={handleSubmit}>\n      <div>\n        <label>\n          Name:\n          <input type=\"text\" ref={nameRef} defaultValue=\"\" />\n        </label>\n      </div>\n      <div>\n        <label>\n          Email:\n          <input type=\"email\" ref={emailRef} defaultValue=\"\" />\n        </label>\n      </div>\n      <button type=\"submit\">Submit</button>\n    </form>\n  );\n}"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "## Question 8: How does the Context API work in React?\n\n**Answer:**\nThe Context API provides a way to share values like themes, user data, or language preferences between components without explicitly passing props through every level of the component tree (avoiding \"prop drilling\").\n\n**Key components of Context API:**\n\n1. **React.createContext**: Creates a context object with an optional default value\n2. **Context.Provider**: Component that provides the context value to its descendants\n3. **Context.Consumer**: Component that subscribes to context changes (older approach)\n4. **useContext Hook**: Simpler way to access context in functional components\n\n**Use cases:**\n- Theme settings (dark/light mode)\n- User authentication data\n- Language/localization preferences\n- Application settings\n- Any data needed by many components at different levels"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "jsx",
+            "source": [
+                "// Creating a context\nconst ThemeContext = React.createContext('light');\n\n// Provider component\nfunction ThemeProvider({ children }) {\n  const [theme, setTheme] = useState('light');\n  \n  const toggleTheme = () => {\n    setTheme(theme === 'light' ? 'dark' : 'light');\n  };\n  \n  // The value prop can be any data structure\n  return (\n    <ThemeContext.Provider value={{ theme, toggleTheme }}>\n      {children}\n    </ThemeContext.Provider>\n  );\n}\n\n// Using context with useContext hook\nfunction ThemedButton() {\n  const { theme, toggleTheme } = useContext(ThemeContext);\n  \n  return (\n    <button\n      onClick={toggleTheme}\n      style={{\n        backgroundColor: theme === 'dark' ? '#333' : '#fff',\n        color: theme === 'dark' ? '#fff' : '#333'\n      }}\n    >\n      Toggle Theme\n    </button>\n  );\n}\n\n// Using context with Consumer (older approach)\nfunction ThemedButtonOld() {\n  return (\n    <ThemeContext.Consumer>\n      {({ theme, toggleTheme }) => (\n        <button\n          onClick={toggleTheme}\n          style={{\n            backgroundColor: theme === 'dark' ? '#333' : '#fff',\n            color: theme === 'dark' ? '#fff' : '#333'\n          }}\n        >\n          Toggle Theme\n        </button>\n      )}\n    </ThemeContext.Consumer>\n  );\n}\n\n// App component using the provider\nfunction App() {\n  return (\n    <ThemeProvider>\n      <div className=\"app\">\n        <ThemedButton />\n        {/* Other components will have access to the theme context */}\n      </div>\n    </ThemeProvider>\n  );\n}"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "## Question 9: How do you handle routing in React?\n\n**Answer:**\nReact doesn't have built-in routing capabilities. For handling routes in React applications, we typically use React Router, which is the standard library for routing in React.\n\n**Key concepts in React Router:**\n\n1. **BrowserRouter**: Uses HTML5 history API to keep UI in sync with the URL\n2. **Routes/Route**: Defines the mapping between URL paths and React components\n3. **Link**: Creates navigational links that don't cause full page refreshes\n4. **Navigate**: Programmatically navigates between routes\n5. **Outlet**: Used for nested routes to render child routes\n6. **useParams**: Hook to access URL parameters\n7. **useNavigate**: Hook for programmatic navigation\n\n**Types of routing:**\n- **Client-side routing**: Navigation happens entirely on the client without page refreshes\n- **Server-side routing**: Traditional approach where each URL request goes to the server\n- **Static routing**: Routes defined at build time\n- **Dynamic routing**: Routes generated at runtime based on data"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "jsx",
+            "source": [
+                "// React Router v6 example\nimport { \n  BrowserRouter, \n  Routes, \n  Route, \n  Link, \n  Outlet,\n  useParams,\n  useNavigate \n} from 'react-router-dom';\n\n// Basic routing setup\nfunction App() {\n  return (\n    <BrowserRouter>\n      <nav>\n        <ul>\n          <li><Link to=\"/\">Home</Link></li>\n          <li><Link to=\"/about\">About</Link></li>\n          <li><Link to=\"/products\">Products</Link></li>\n        </ul>\n      </nav>\n\n      <Routes>\n        <Route path=\"/\" element={<Home />} />\n        <Route path=\"/about\" element={<About />} />\n        <Route path=\"/products\" element={<Products />}>\n          {/* Nested routes */}\n          <Route index element={<ProductList />} />\n          <Route path=\":id\" element={<ProductDetails />} />\n        </Route>\n        <Route path=\"*\" element={<NotFound />} />\n      </Routes>\n    </BrowserRouter>\n  );\n}\n\n// Home page component\nfunction Home() {\n  return <h1>Home Page</h1>;\n}\n\n// About page component\nfunction About() {\n  return <h1>About Page</h1>;\n}\n\n// Products page with nested routes\nfunction Products() {\n  return (\n    <div>\n      <h1>Products</h1>\n      <Outlet /> {/* This is where nested routes render */}\n    </div>\n  );\n}\n\n// Product list component\nfunction ProductList() {\n  return (\n    <ul>\n      <li><Link to=\"/products/1\">Product 1</Link></li>\n      <li><Link to=\"/products/2\">Product 2</Link></li>\n    </ul>\n  );\n}\n\n// Product details with URL parameters\nfunction ProductDetails() {\n  const { id } = useParams(); // Access the 'id' URL parameter\n  const navigate = useNavigate(); // For programmatic navigation\n  \n  return (\n    <div>\n      <h2>Product {id} Details</h2>\n      <button onClick={() => navigate('/products')}>\n        Back to Products\n      </button>\n    </div>\n  );\n}\n\n// 404 Not Found page\nfunction NotFound() {\n  return <h1>404 - Page Not Found</h1>;\n}"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "## Question 10: How would you optimize performance in a React application?\n\n**Answer:**\nOptimizing React applications involves various techniques to reduce unnecessary re-renders and improve overall performance.\n\n**Key optimization techniques:**\n\n1. **Component optimization:**\n   - Use `React.memo` for functional components\n   - Use `PureComponent` or implement `shouldComponentUpdate` for class components\n   - Use `useMemo` to memoize expensive calculations\n   - Use `useCallback` to prevent unnecessary recreation of functions\n\n2. **Rendering optimization:**\n   - Use keys properly in lists\n   - Virtualize long lists with react-window or react-virtualized\n   - Lazy load components with `React.lazy` and `Suspense`\n   - Implement code splitting to reduce bundle size\n   - Avoid unnecessary re-renders by careful state management\n\n3. **Application optimization:**\n   - Use production builds\n   - Implement proper bundling and minification\n   - Optimize images and use proper formats\n   - Implement effective caching strategies\n   - Use web workers for CPU-intensive tasks"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "jsx",
+            "source": [
+                "// Using React.memo to prevent unnecessary re-renders\nconst ExpensiveComponent = React.memo(function ExpensiveComponent({ data }) {\n  // Only re-renders if data changes\n  return <div>{/* Render based on data */}</div>;\n});\n\n// Using useMemo for expensive calculations\nfunction DataProcessor({ items }) {\n  // Memoize the result of expensive processing\n  const processedData = useMemo(() => {\n    return items.filter(item => item.active)\n                .map(item => computeExpensiveValue(item))\n                .sort((a, b) => b.score - a.score);\n  }, [items]); // Only recalculate when items changes\n  \n  return <div>{/* Render processed data */}</div>;\n}\n\n// Using useCallback to prevent function recreation\nfunction SearchComponent({ onSearch }) {\n  const [query, setQuery] = useState('');\n  \n  // This function won't be recreated unless query or onSearch changes\n  const handleSearch = useCallback(() => {\n    onSearch(query);\n  }, [query, onSearch]);\n  \n  return (\n    <div>\n      <input value={query} onChange={e => setQuery(e.target.value)} />\n      <SearchButton onSearch={handleSearch} />\n    </div>\n  );\n}\n\n// Code splitting with React.lazy and Suspense\nconst LazyComponent = React.lazy(() => import('./LazyComponent'));\n\nfunction MyApp() {\n  return (\n    <div>\n      <React.Suspense fallback={<div>Loading...</div>}>\n        <LazyComponent />\n      </React.Suspense>\n    </div>\n  );\n}"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "## Question 11: What are Error Boundaries in React?\n\n**Answer:**\nError Boundaries are React components that catch JavaScript errors anywhere in their child component tree, log those errors, and display a fallback UI instead of crashing the entire component tree.\n\n**Key features of Error Boundaries:**\n- They catch errors during rendering, in lifecycle methods, and in constructors\n- They do NOT catch errors in event handlers, asynchronous code, or server-side rendering\n- They only catch errors in components below them in the tree\n\n**How to create an Error Boundary:**\n- Create a class component that implements at least one of these lifecycle methods:\n  - `static getDerivedStateFromError()`: Used to render a fallback UI\n  - `componentDidCatch()`: Used for logging error information\n\n**Note:** Error Boundaries only work in class components, there is no hook equivalent yet."
+            ],
+            "outputs": []
+        },
+        {
+            "language": "jsx",
+            "source": [
+                "// Error Boundary Component\nclass ErrorBoundary extends React.Component {\n  constructor(props) {\n    super(props);\n    this.state = { hasError: false };\n  }\n\n  static getDerivedStateFromError(error) {\n    // Update state so the next render will show the fallback UI\n    return { hasError: true };\n  }\n\n  componentDidCatch(error, errorInfo) {\n    // Log the error to an error reporting service\n    console.error('Error caught by boundary:', error, errorInfo);\n    // You could also send to a logging service like Sentry\n    // logErrorToService(error, errorInfo);\n  }\n\n  render() {\n    if (this.state.hasError) {\n      // You can render any custom fallback UI\n      return (\n        <div className=\"error-container\">\n          <h2>Something went wrong.</h2>\n          <p>The error has been logged. Please try refreshing the page.</p>\n          <button onClick={() => this.setState({ hasError: false })}>\n            Try Again\n          </button>\n        </div>\n      );\n    }\n\n    return this.props.children;\n  }\n}\n\n// Usage example\nfunction App() {\n  return (\n    <div>\n      <h1>My Application</h1>\n      <ErrorBoundary>\n        <MyComponent />\n      </ErrorBoundary>\n    </div>\n  );\n}\n\n// Component that might throw an error\nfunction MyComponent() {\n  const [shouldError, setShouldError] = useState(false);\n  \n  if (shouldError) {\n    throw new Error('Test error!');\n  }\n  \n  return (\n    <div>\n      <h2>My Component</h2>\n      <button onClick={() => setShouldError(true)}>\n        Trigger Error\n      </button>\n    </div>\n  );\n}"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "## Question 12: What are refs in React and when should you use them?\n\n**Answer:**\nRefs provide a way to access DOM nodes or React elements created in the render method. They allow you to interact directly with DOM elements or class component instances.\n\n**When to use refs:**\n- Managing focus, text selection, or media playback\n- Triggering imperative animations\n- Integrating with third-party DOM libraries\n- Measuring DOM elements (like getting height/width)\n\n**When NOT to use refs:**\n- Avoid using refs for anything that can be done declaratively\n- Don't overuse them for operations that should be handled by React's data flow\n\n**Ways to create refs:**\n1. `React.createRef()` - For class components\n2. `useRef()` Hook - For functional components\n3. Callback refs - For more control over when refs are set and unset"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "jsx",
+            "source": [
+                "// Class component with createRef\nclass MyClassComponent extends React.Component {\n  constructor(props) {\n    super(props);\n    this.inputRef = React.createRef(); // Create a ref\n  }\n\n  componentDidMount() {\n    // Access the DOM node\n    this.inputRef.current.focus(); // Focus the input when component mounts\n  }\n\n  render() {\n    return <input ref={this.inputRef} type=\"text\" />;\n  }\n}\n\n// Functional component with useRef Hook\nfunction MyFunctionalComponent() {\n  const inputRef = useRef(null); // Create a ref\n  \n  useEffect(() => {\n    // Similar to componentDidMount\n    inputRef.current.focus(); // Focus the input when component mounts\n  }, []);\n  \n  const handleButtonClick = () => {\n    // Access the input value directly from DOM\n    alert(`Input contains: ${inputRef.current.value}`);\n    // Clear and focus the input\n    inputRef.current.value = '';\n    inputRef.current.focus();\n  };\n  \n  return (\n    <div>\n      <input ref={inputRef} type=\"text\" />\n      <button onClick={handleButtonClick}>Check Input</button>\n    </div>\n  );\n}\n\n// Callback ref example\nfunction CallbackRefExample() {\n  let inputRef = null;\n  \n  const setInputRef = (element) => {\n    inputRef = element; // Store reference to the DOM node\n    if (element) {\n      element.focus();\n    }\n  };\n  \n  return <input ref={setInputRef} type=\"text\" />;\n}"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "## Question 13: What are Higher-Order Components (HOCs) in React?\n\n**Answer:**\nA Higher-Order Component (HOC) is an advanced technique in React for reusing component logic. It's a function that takes a component and returns a new component with additional props or behavior.\n\n**Key characteristics of HOCs:**\n- They're a pattern created out of React's compositional nature\n- They don't modify the input component; they create a new one that wraps it\n- They can be used to share common functionality across components without duplicating code\n- They pass all props to the wrapped component, with the option to add or transform props\n\n**Common use cases:**\n- Code reuse, logic abstraction\n- State abstraction and manipulation\n- Props manipulation\n- Wrapping components with common elements (like layout components)\n\n**Note:** While still widely used, many use cases for HOCs can now be solved more elegantly with Hooks or the Render Props pattern."
+            ],
+            "outputs": []
+        },
+        {
+            "language": "jsx",
+            "source": [
+                "// A simple HOC that adds loading state\nfunction withLoading(WrappedComponent) {\n  return function WithLoadingComponent({ isLoading, ...props }) {\n    if (isLoading) {\n      return <div>Loading...</div>;\n    }\n    return <WrappedComponent {...props} />;\n  };\n}\n\n// Component to be wrapped\nfunction UserList({ users }) {\n  return (\n    <ul>\n      {users.map(user => (\n        <li key={user.id}>{user.name}</li>\n      ))}\n    </ul>\n  );\n}\n\n// Apply the HOC\nconst UserListWithLoading = withLoading(UserList);\n\n// Usage of the enhanced component\nfunction App() {\n  const [isLoading, setIsLoading] = useState(true);\n  const [users, setUsers] = useState([]);\n  \n  useEffect(() => {\n    // Simulate API call\n    setTimeout(() => {\n      setUsers([\n        { id: 1, name: 'John Doe' },\n        { id: 2, name: 'Jane Smith' },\n      ]);\n      setIsLoading(false);\n    }, 2000);\n  }, []);\n  \n  return <UserListWithLoading isLoading={isLoading} users={users} />;\n}\n\n// More complex HOC example with additional functionality\nfunction withAuth(WrappedComponent) {\n  return class WithAuth extends React.Component {\n    constructor(props) {\n      super(props);\n      this.state = {\n        isAuthenticated: false\n      };\n    }\n    \n    componentDidMount() {\n      // Check if user is authenticated (e.g., from localStorage)\n      const token = localStorage.getItem('authToken');\n      this.setState({ isAuthenticated: !!token });\n    }\n    \n    login = () => {\n      // Simulate login\n      localStorage.setItem('authToken', 'dummy-token');\n      this.setState({ isAuthenticated: true });\n    }\n    \n    logout = () => {\n      // Simulate logout\n      localStorage.removeItem('authToken');\n      this.setState({ isAuthenticated: false });\n    }\n    \n    render() {\n      // Pass additional props to the wrapped component\n      return (\n        <WrappedComponent\n          isAuthenticated={this.state.isAuthenticated}\n          login={this.login}\n          logout={this.logout}\n          {...this.props}\n        />\n      );\n    }\n  };\n}"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "## Question 14: What is the Render Props pattern in React?\n\n**Answer:**\nRender Props is a technique for sharing code between React components using a prop whose value is a function. A component with a render prop takes a function that returns a React element and calls it instead of implementing its own render logic.\n\n**Key characteristics:**\n- It allows component logic to be used by other components\n- The parent component controls what gets rendered by providing a function\n- It's called \"render props\" but the prop doesn't have to be called `render` (e.g., `children` can also be a function)\n- It solves similar problems as HOCs but avoids issues like prop naming conflicts\n\n**Use cases:**\n- Sharing stateful logic between components\n- Creating reusable components that manage behavior but are agnostic about rendering\n- Managing cross-cutting concerns like tracking mouse position, handling form state, etc."
+            ],
+            "outputs": []
+        },
+        {
+            "language": "jsx",
+            "source": [
+                "// MouseTracker component using render props\nclass MouseTracker extends React.Component {\n  constructor(props) {\n    super(props);\n    this.state = { x: 0, y: 0 };\n  }\n  \n  handleMouseMove = (event) => {\n    this.setState({\n      x: event.clientX,\n      y: event.clientY\n    });\n  }\n  \n  render() {\n    return (\n      <div style={{ height: '100vh' }} onMouseMove={this.handleMouseMove}>\n        {/* Call the render prop function and pass the state */}\n        {this.props.render(this.state)}\n      </div>\n    );\n  }\n}\n\n// Using the MouseTracker component\nfunction App() {\n  return (\n    <MouseTracker\n      render={({ x, y }) => (\n        <div>\n          <h1>Mouse position:</h1>\n          <p>X: {x}, Y: {y}</p>\n          <div\n            style={{\n              position: 'absolute',\n              left: x,\n              top: y,\n              width: '10px',\n              height: '10px',\n              backgroundColor: 'red',\n              borderRadius: '50%'\n            }}\n          />\n        </div>\n      )}\n    />\n  );\n}\n\n// Using children as a function (another render props pattern)\nfunction ToggleComponent({ children }) {\n  const [isToggled, setIsToggled] = useState(false);\n  \n  const toggle = () => setIsToggled(!isToggled);\n  \n  // Call children as a function and pass the state and handlers\n  return children({ isToggled, toggle });\n}\n\n// Using the ToggleComponent\nfunction Usage() {\n  return (\n    <ToggleComponent>\n      {({ isToggled, toggle }) => (\n        <div>\n          <button onClick={toggle}>\n            {isToggled ? 'Hide' : 'Show'} Content\n          </button>\n          {isToggled && <p>This content can be toggled on and off.</p>}\n        </div>\n      )}\n    </ToggleComponent>\n  );\n}"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "## Question 15: What are React Fragments and why are they useful?\n\n**Answer:**\nReact Fragments are a feature that allows you to group multiple elements without adding an extra node to the DOM. They let you return multiple elements from a component's render method without requiring a wrapper div or other container element.\n\n**Why React Fragments are useful:**\n- **Cleaner DOM**: They don't create an additional DOM node, keeping the HTML output cleaner\n- **CSS Flexibility**: Prevents issues with CSS flexbox and grid layouts that might break with extra divs\n- **Semantic HTML**: Allows for more semantically correct HTML (like having multiple `<td>` elements directly inside a `<tr>` without a wrapper)\n- **Performance**: Slightly better performance by avoiding unnecessary DOM nodes\n\n**Ways to use Fragments:**\n1. Long syntax: `<React.Fragment>...</React.Fragment>`\n2. Short syntax: `<>...</>` (does not support keys or attributes)\n3. With key attribute: `<React.Fragment key={item.id}>...</React.Fragment>`"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "jsx",
+            "source": [
+                "// Without Fragments (adds extra div to DOM)\nfunction WithoutFragment() {\n  return (\n    <div> {/* Extra div that might cause styling issues */}\n      <h1>Title</h1>\n      <p>Paragraph 1</p>\n      <p>Paragraph 2</p>\n    </div>\n  );\n}\n\n// With Fragments (long syntax)\nfunction WithFragmentLong() {\n  return (\n    <React.Fragment>\n      <h1>Title</h1>\n      <p>Paragraph 1</p>\n      <p>Paragraph 2</p>\n    </React.Fragment>\n  );\n}\n\n// With Fragments (short syntax)\nfunction WithFragmentShort() {\n  return (\n    <>\n      <h1>Title</h1>\n      <p>Paragraph 1</p>\n      <p>Paragraph 2</p>\n    </>\n  );\n}\n\n// Fragments with keys (in a list)\nfunction GroceryList({ items }) {\n  return (\n    <dl>\n      {items.map(item => (\n        // Can't use the short syntax here because we need to add a key\n        <React.Fragment key={item.id}>\n          <dt>{item.name}</dt>\n          <dd>{item.description}</dd>\n        </React.Fragment>\n      ))}\n    </dl>\n  );\n}\n\n// Real-world example: Table rows and cells\nfunction TableExample() {\n  return (\n    <table>\n      <tbody>\n        <tr>\n          {/* Using fragments to avoid invalid HTML (divs inside tr) */}\n          <>\n            <td>Cell 1</td>\n            <td>Cell 2</td>\n          </>\n        </tr>\n      </tbody>\n    </table>\n  );\n}"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "## Question 16: What is code-splitting in React and how is it implemented?\n\n**Answer:**\nCode-splitting is a technique to split your code into smaller chunks which can be loaded on demand or in parallel, rather than loading the entire app before users can use it. This improves initial load time and performance by reducing the bundle size.\n\n**Benefits of code-splitting:**\n- Reduces initial load time by loading only what's needed\n- Avoids loading code that the user may never need\n- Improves performance on slower networks and devices\n- Helps maintain faster startup times as your app grows\n\n**Ways to implement code-splitting in React:**\n\n1. **Dynamic imports**: Using the JavaScript `import()` syntax\n2. **React.lazy**: Built-in function for component lazy-loading\n3. **Suspense**: Used with React.lazy to specify loading state\n4. **Route-based splitting**: Loading components based on routes\n5. **Library-based splitting**: Using tools like Loadable Components for server-side rendering support"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "jsx",
+            "source": [
+                "// Basic code-splitting with dynamic imports\nimport React, { useState } from 'react';\n\nfunction BasicSplitting() {\n  const [module, setModule] = useState(null);\n  \n  const loadModule = async () => {\n    // Dynamically import the module only when needed\n    const loadedModule = await import('./HeavyComponent');\n    setModule(loadedModule.default);\n  };\n  \n  return (\n    <div>\n      <button onClick={loadModule}>Load Heavy Component</button>\n      {module && <module />}\n    </div>\n  );\n}\n\n// Code-splitting with React.lazy and Suspense\nimport React, { Suspense, lazy } from 'react';\n\n// Lazy load components\nconst LazyComponent = lazy(() => import('./LazyComponent'));\nconst AnotherLazyComponent = lazy(() => import('./AnotherLazyComponent'));\n\nfunction LazyLoadingExample() {\n  const [showComponent, setShowComponent] = useState(false);\n  \n  return (\n    <div>\n      <button onClick={() => setShowComponent(!showComponent)}>\n        {showComponent ? 'Hide' : 'Show'} Component\n      </button>\n      \n      {/* Suspense provides a fallback while waiting */}\n      <Suspense fallback={<div>Loading...</div>}>\n        {showComponent && <LazyComponent />}\n      </Suspense>\n    </div>\n  );\n}\n\n// Route-based code-splitting with React Router\nimport { BrowserRouter, Routes, Route } from 'react-router-dom';\nimport React, { Suspense, lazy } from 'react';\n\n// Lazy load route components\nconst Home = lazy(() => import('./Home'));\nconst About = lazy(() => import('./About'));\nconst Dashboard = lazy(() => import('./Dashboard'));\n\nfunction App() {\n  return (\n    <BrowserRouter>\n      <Suspense fallback={<div>Loading page...</div>}>\n        <Routes>\n          <Route path=\"/\" element={<Home />} />\n          <Route path=\"/about\" element={<About />} />\n          <Route path=\"/dashboard\" element={<Dashboard />} />\n        </Routes>\n      </Suspense>\n    </BrowserRouter>\n  );\n}"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "## Question 17: What are React Portals and when would you use them?\n\n**Answer:**\nReact Portals provide a way to render children into a DOM node that exists outside the DOM hierarchy of the parent component. This allows you to render a component at a different location in the DOM tree, escaping the normal containment of its parent component.\n\n**The syntax for creating a portal:**\n```jsx\nReactDOM.createPortal(child, container)\n```\n- `child`: Any renderable React child (element, string, fragment, etc.)\n- `container`: A DOM element where the portal should be inserted\n\n**Common use cases for Portals:**\n- **Modals/dialogs**: Rendering modals outside the main app to avoid z-index or overflow issues\n- **Tooltips/popovers**: Positioning tooltips relative to the viewport instead of a potentially clipped parent\n- **Floating elements**: Creating elements that float above the rest of the page\n- **Side panels**: Rendering slide-out menus or panels in a different part of the DOM\n- **Third-party DOM containers**: Rendering into elements not controlled by your React app"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "jsx",
+            "source": [
+                "// Modal component using Portals\nimport React, { useState } from 'react';\nimport ReactDOM from 'react-dom';\n\nfunction Modal({ isOpen, onClose, children }) {\n  if (!isOpen) return null;\n  \n  // Create portal to a div with id=\"modal-root\" outside your app tree\n  return ReactDOM.createPortal(\n    <div className=\"modal-overlay\">\n      <div className=\"modal-content\">\n        <button className=\"modal-close\" onClick={onClose}>\n          &times;\n        </button>\n        {children}\n      </div>\n    </div>,\n    document.getElementById('modal-root') // DOM node outside your app hierarchy\n  );\n}\n\n// Using the Modal component\nfunction App() {\n  const [showModal, setShowModal] = useState(false);\n  \n  return (\n    <div className=\"app\">\n      <h1>React Portals Demo</h1>\n      <button onClick={() => setShowModal(true)}>\n        Show Modal\n      </button>\n      \n      {/* Modal gets rendered to #modal-root, not as a child of .app */}\n      <Modal isOpen={showModal} onClose={() => setShowModal(false)}>\n        <h2>This is a modal dialog</h2>\n        <p>It's rendered outside the main app hierarchy using portals.</p>\n      </Modal>\n    </div>\n  );\n}\n\n// CSS for the modal (would be in a separate file)\n/* \n.modal-overlay {\n  position: fixed;\n  top: 0;\n  left: 0;\n  right: 0;\n  bottom: 0;\n  background-color: rgba(0, 0, 0, 0.5);\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  z-index: 1000;\n}\n\n.modal-content {\n  background-color: white;\n  padding: 20px;\n  border-radius: 4px;\n  max-width: 500px;\n  position: relative;\n}\n\n.modal-close {\n  position: absolute;\n  top: 10px;\n  right: 10px;\n  border: none;\n  background: transparent;\n  font-size: 24px;\n  cursor: pointer;\n}\n*/\n\n// Tooltip component using Portals\nfunction Tooltip({ text, isVisible, position, anchorEl }) {\n  if (!isVisible || !anchorEl) return null;\n  \n  // Calculate position based on anchor element\n  const rect = anchorEl.getBoundingClientRect();\n  const tooltipStyle = {\n    position: 'absolute',\n    top: rect.bottom + 10,\n    left: rect.left,\n    backgroundColor: '#333',\n    color: 'white',\n    padding: '5px 10px',\n    borderRadius: '4px',\n    zIndex: 1000\n  };\n  \n  return ReactDOM.createPortal(\n    <div style={tooltipStyle}>{text}</div>,\n    document.body // Appending directly to the body\n  );\n}"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "## Question 18: How do you test React components?\n\n**Answer:**\nTesting React components typically involves a combination of different testing methodologies and tools that focus on various aspects of the component's behavior and rendering.\n\n**Types of Tests for React Components:**\n\n1. **Unit Tests:**\n   - Test individual components in isolation\n   - Focus on component logic, state changes, and props handling\n   - Typically use shallow rendering\n\n2. **Integration Tests:**\n   - Test how multiple components work together\n   - Validate component interactions and data flow\n   - Often use full rendering\n\n3. **Snapshot Tests:**\n   - Capture a component's rendered output and compare it to a saved \"snapshot\"\n   - Good for detecting unexpected UI changes\n\n4. **End-to-End (E2E) Tests:**\n   - Test the entire application flow\n   - Simulate real user interactions\n\n**Popular Testing Libraries for React:**\n- **Jest**: JavaScript testing framework (often the test runner)\n- **React Testing Library**: Utility library focusing on testing components as users would use them\n- **Enzyme**: Testing utility with more focus on implementation details (less commonly used with modern React)\n- **Cypress/Playwright/Puppeteer**: For E2E testing"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "jsx",
+            "source": [
+                "// Component to test\nfunction Counter() {\n  const [count, setCount] = useState(0);\n  \n  return (\n    <div>\n      <h1 data-testid=\"count\">{count}</h1>\n      <button onClick={() => setCount(count + 1)}>Increment</button>\n      <button onClick={() => setCount(count - 1)}>Decrement</button>\n    </div>\n  );\n}\n\n// Unit test using React Testing Library\n// File: Counter.test.jsx\nimport { render, screen, fireEvent } from '@testing-library/react';\nimport Counter from './Counter';\n\ntest('renders counter and buttons', () => {\n  render(<Counter />);\n  \n  // Check if elements are in the document\n  expect(screen.getByText('Increment')).toBeInTheDocument();\n  expect(screen.getByText('Decrement')).toBeInTheDocument();\n  expect(screen.getByTestId('count')).toHaveTextContent('0');\n});\n\ntest('increments the counter when increment button is clicked', () => {\n  render(<Counter />);\n  \n  // Get elements\n  const incrementButton = screen.getByText('Increment');\n  const countElement = screen.getByTestId('count');\n  \n  // Initial state check\n  expect(countElement).toHaveTextContent('0');\n  \n  // Trigger click event\n  fireEvent.click(incrementButton);\n  \n  // Check if counter incremented\n  expect(countElement).toHaveTextContent('1');\n});\n\ntest('decrements the counter when decrement button is clicked', () => {\n  render(<Counter />);\n  \n  // Get elements\n  const decrementButton = screen.getByText('Decrement');\n  const countElement = screen.getByTestId('count');\n  \n  // Initial state check\n  expect(countElement).toHaveTextContent('0');\n  \n  // Trigger click event\n  fireEvent.click(decrementButton);\n  \n  // Check if counter decremented\n  expect(countElement).toHaveTextContent('-1');\n});\n\n// Snapshot test example\ntest('matches snapshot', () => {\n  const { container } = render(<Counter />);\n  expect(container).toMatchSnapshot();\n});\n\n// Example of testing a component with props\nfunction Greeting({ name }) {\n  return <h1>Hello, {name}!</h1>;\n}\n\n// Test file for Greeting\ntest('renders greeting with name', () => {\n  render(<Greeting name=\"John\" />);\n  expect(screen.getByText('Hello, John!')).toBeInTheDocument();\n});"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "## Question 19: What is server-side rendering (SSR) in React and what are its benefits?\n\n**Answer:**\nServer-Side Rendering (SSR) is the process of rendering React components on the server rather than in the browser. The server sends fully rendered HTML to the client, and then React \"hydrates\" this HTML to attach event listeners and make it interactive.\n\n**Benefits of SSR:**\n\n1. **Improved Performance:**\n   - Faster First Contentful Paint (FCP) and Time to Interactive (TTI)\n   - Users see rendered content while JavaScript is still loading/parsing\n\n2. **Better SEO:**\n   - Search engine crawlers can see the fully rendered content\n   - Improves indexing for search engines that don't execute JavaScript well\n\n3. **Enhanced User Experience:**\n   - Provides content to users faster, especially on slower connections\n   - Reduces perceived loading time\n\n4. **Social Media Sharing:**\n   - Better previews when shared on social platforms\n\n**Challenges with SSR:**\n- More complex setup and deployment\n- Server resource requirements\n- Need to handle server/client differences (e.g., `window` object)\n- Additional complexity with data fetching\n\n**Common SSR frameworks and tools for React:**\n- Next.js: Full-featured React framework with built-in SSR\n- Remix: Modern React framework with nested routing and SSR\n- Gatsby: Static site generation with some SSR capabilities\n- React Router with custom Express setup"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "jsx",
+            "source": [
+                "// Basic SSR setup with Express and React\n// server.js\nimport express from 'express';\nimport React from 'react';\nimport { renderToString } from 'react-dom/server';\nimport App from './App';\n\nconst app = express();\nconst port = 3000;\n\napp.use(express.static('public'));\n\napp.get('*', (req, res) => {\n  // Render the App component to string\n  const appHtml = renderToString(<App />);\n  \n  // Insert the rendered app into the HTML template\n  const html = `\n    <!DOCTYPE html>\n    <html>\n      <head>\n        <title>React SSR Example</title>\n        <link rel=\"stylesheet\" href=\"/styles.css\">\n      </head>\n      <body>\n        <div id=\"root\">${appHtml}</div>\n        \n        <!-- Hydration script -->\n        <script src=\"/bundle.js\"></script>\n      </body>\n    </html>\n  `;\n  \n  // Send the rendered HTML to the client\n  res.send(html);\n});\n\napp.listen(port, () => {\n  console.log(`Server running at http://localhost:${port}`);\n});\n\n// Client-side hydration\n// client.js\nimport React from 'react';\nimport { hydrateRoot } from 'react-dom/client';\nimport App from './App';\n\n// Hydrate the app (attach event listeners to server-rendered HTML)\nhydrateRoot(document.getElementById('root'), <App />);\n\n// Next.js SSR example (much simpler)\n// pages/index.js in a Next.js project\nimport React from 'react';\n\n// This function runs on the server\nexport async function getServerSideProps() {\n  // Fetch data from an API\n  const res = await fetch('https://api.example.com/data');\n  const data = await res.json();\n  \n  // Pass data to the page via props\n  return { props: { data } };\n}\n\n// The component gets rendered on the server with the fetched data\nfunction HomePage({ data }) {\n  return (\n    <div>\n      <h1>Server-Side Rendered Page</h1>\n      <ul>\n        {data.map(item => (\n          <li key={item.id}>{item.name}</li>\n        ))}\n      </ul>\n    </div>\n  );\n}\n\nexport default HomePage;"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "## Question 20: What is React Suspense and why is it useful?\n\n**Answer:**\nReact Suspense is a feature that allows components to \"suspend\" rendering while they wait for something (like data, code, or images to load), and specify a fallback UI to show in the meantime.\n\n**Key features of Suspense:**\n\n1. **Declarative Loading States:**\n   - Simplifies the handling of loading states\n   - Allows you to show a placeholder while content loads\n\n2. **Code Splitting:**\n   - Works with `React.lazy()` for component-level code splitting\n   - Shows fallback content while the code is being loaded\n\n3. **Data Fetching (still experimental):**\n   - Intended to work with async data sources\n   - Will allow components to wait for data before rendering\n\n**Current stable use cases:**\n- Code splitting with React.lazy()\n- Managing loading states for dynamic imports\n\n**Future/experimental use cases:**\n- Data fetching with Suspense-compatible data sources\n- Image/asset loading\n- Any asynchronous operation where you want to show a fallback UI"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "jsx",
+            "source": [
+                "// Basic Suspense with React.lazy for code splitting\nimport React, { Suspense, lazy } from 'react';\n\n// Lazy load components\nconst LazyComponent = lazy(() => import('./LazyComponent'));\n\nfunction MyApp() {\n  return (\n    <div>\n      <h1>My Application</h1>\n      <Suspense fallback={<div>Loading...</div>}>\n        <LazyComponent />\n      </Suspense>\n    </div>\n  );\n}\n\n// Multiple components with a single Suspense boundary\nfunction MultipleComponents() {\n  const LazyComponent1 = lazy(() => import('./Component1'));\n  const LazyComponent2 = lazy(() => import('./Component2'));\n  const LazyComponent3 = lazy(() => import('./Component3'));\n  \n  return (\n    <div>\n      <Suspense fallback={<div>Loading components...</div>}>\n        <LazyComponent1 />\n        <LazyComponent2 />\n        <LazyComponent3 />\n      </Suspense>\n    </div>\n  );\n}\n\n// Nested Suspense boundaries\nfunction NestedSuspense() {\n  const LazyHeader = lazy(() => import('./Header'));\n  const LazyContent = lazy(() => import('./Content'));\n  const LazyFooter = lazy(() => import('./Footer'));\n  \n  return (\n    <div className=\"app\">\n      <Suspense fallback={<div>Loading header...</div>}>\n        <LazyHeader />\n      </Suspense>\n      \n      <Suspense fallback={<div>Loading content...</div>}>\n        <LazyContent />\n      </Suspense>\n      \n      <Suspense fallback={<div>Loading footer...</div>}>\n        <LazyFooter />\n      </Suspense>\n    </div>\n  );\n}\n\n// Example of how Suspense might be used for data fetching (experimental)\n// NOTE: This API is not finalized and may change\nfunction ProfilePage() {\n  return (\n    <Suspense fallback={<h1>Loading profile...</h1>}>\n      <ProfileDetails />\n      <Suspense fallback={<h2>Loading posts...</h2>}>\n        <ProfilePosts />\n      </Suspense>\n    </Suspense>\n  );\n}\n\n// With future data fetching libraries that support Suspense\nfunction ProfileDetails() {\n  // This would suspend rendering until user data is loaded\n  const user = useUser(); \n  \n  return (\n    <div>\n      <h1>{user.name}</h1>\n      <p>{user.bio}</p>\n    </div>\n  );\n}"
+            ],
+            "outputs": []
+        }
+    ]
+}
